@@ -1,16 +1,20 @@
 import express from 'express';
-//simple endpoint
+import dotenv from 'dotenv';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import userRoutes from './routes/user.route.mjs';
 
+dotenv.config();
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
+// Routes
+app.use('/api/users', userRoutes);
+app.get('/', (req, res) => res.send('Hello World!'));
+// Server
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
